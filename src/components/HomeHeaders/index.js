@@ -39,7 +39,7 @@ export default function HomePageHeader() {
               <h3>"With great power comes great responsibility!"</h3>
               <br />
               <Button
-                href='/alcance'
+                href='/character'
                 className='btn-round'
                 color='neutral'
                 type='button'
