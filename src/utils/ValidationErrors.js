@@ -1,5 +1,3 @@
-import {ValidationError} from 'yup';
-
 export const getValidationErrors = (err) => {
   const validationErrors = {};
 

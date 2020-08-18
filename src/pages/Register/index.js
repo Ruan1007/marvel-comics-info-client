@@ -1,26 +1,50 @@
 import React, {useCallback, useState} from 'react';
-import {Container, Row, Col, Card, Button} from 'reactstrap';
-import api from 'services/api';
-import * as Yup from 'yup';
 import {useHistory} from 'react-router-dom';
-import {getValidationErrors} from 'utils/ValidationErrors';
-import {Formik, Form, Field} from 'formik';
-import {toast} from 'react-toastify';
+import * as Yup from 'yup';
+import api from 'services/api';
 import {setUser, setToken} from 'services/auth';
+import {toast} from 'react-toastify';
+import {Formik, Form, Field} from 'formik';
+import {getValidationErrors} from 'utils/ValidationErrors';
+import {Container, Row, Col, Card, Button} from 'reactstrap';
+import DatePicker from 'reactstrap-date-picker';
 
-export default function Login() {
+export default function Register() {
+  const [date, setDate] = useState();
+  const [formattedDate, setFormattedDate] = useState();
   const history = useHistory();
 
-  const LoginSchema = Yup.object().shape({
+  const handleChange = (value, formattedValue) => {
+    setDate(value);
+    setFormattedDate(formattedValue);
+  };
+
+  const RegisterSchema = Yup.object().shape({
+    name: Yup.string().required('Name is required'),
     email: Yup.string().required('Email is required').email('Email is invalid'),
-    password: Yup.string().required('Password is required')
+    password: Yup.string().required('Password is required'),
+    confirmPassword: Yup.string().oneOf(
+      [Yup.ref('password'), null],
+      'Password must match'
+    ),
+    birthDate: Yup.date().required('Date is required')
   });
 
-  const login = async ({email, password}) => {
-    const response = await api.post('auth/login', {
+  const register = async ({
+    name,
+    email,
+    password,
+    confirmPassword,
+    birthDate
+  }) => {
+    const response = await api.post('auth/register', {
+      name,
       email,
-      password
+      password,
+      confirmPassword,
+      birthDate
     });
+
     const {token, user} = response.data;
     setUser(JSON.stringify(user));
     setToken(token);
@@ -28,17 +52,21 @@ export default function Login() {
 
   const handleSubmit = useCallback(
     async (data) => {
+      console.log('register');
       try {
-        await LoginSchema.validate(data, {
+        await RegisterSchema.validate(data, {
           abortEarly: false
         });
 
-        await login({
+        await register({
+          name: data.name,
           email: data.email,
-          password: data.password
+          password: data.password,
+          confirmPassword: data.confirmPassword,
+          birthDate: data.birthDate
         });
 
-        toast.success('Login Successfully', {
+        toast.success('Register Successfully', {
           position: 'top-right',
           autoClose: 5000,
           closeOnClick: true,
@@ -57,7 +85,7 @@ export default function Login() {
         return false;
       }
     },
-    [login, history]
+    [register, history]
   );
 
   return (
@@ -73,16 +101,28 @@ export default function Login() {
           <Row>
             <Col className='ml-auto mr-auto' lg='4'>
               <Card className='card-register ml-auto mr-auto'>
-                <h3 className='title mx-auto'>Welcome</h3>
+                <h3 className='title mx-auto'>Register</h3>
                 <Formik
                   initialValues={{
+                    name: '',
                     email: '',
-                    password: ''
+                    password: '',
+                    confirmPassword: '',
+                    birthDate: ''
                   }}
-                  validationSchema={LoginSchema}
+                  validationSchema={RegisterSchema}
                   onSubmit={handleSubmit}>
-                  {({errors, touched}) => (
+                  {({errors, touched, setFieldValue}) => (
                     <Form>
+                      <label>Name</label>
+                      <Field
+                        className='form-control'
+                        placeholder='Name'
+                        name='name'
+                      />
+                      {errors.name && touched.name ? (
+                        <div style={{color: 'red'}}>{errors.name}</div>
+                      ) : null}
                       <label>Email</label>
                       <Field
                         className='form-control'
@@ -103,12 +143,37 @@ export default function Login() {
                       {errors.password && touched.password ? (
                         <div style={{color: 'red'}}>{errors.password}</div>
                       ) : null}
+                      <label>Confirm Password</label>
+                      <Field
+                        className='form-control'
+                        placeholder='Confirm Password'
+                        name='confirmPassword'
+                        type='password'
+                      />
+                      {errors.confirmPassword && touched.confirmPassword ? (
+                        <div style={{color: 'red'}}>
+                          {errors.confirmPassword}
+                        </div>
+                      ) : null}
+                      <label>Birth Date</label>
+                      <DatePicker
+                        id='birthDate'
+                        name='birthDate'
+                        value={date}
+                        onChange={(v, f) => {
+                          handleChange(v, f);
+                          setFieldValue('birthDate', v);
+                        }}
+                      />
+                      {errors.birthDate && touched.birthDate ? (
+                        <div style={{color: 'red'}}>{errors.birthDate}</div>
+                      ) : null}
                       <Button
                         block
                         type='submit'
                         className='btn-round'
                         style={{backgroundColor: '#E62429'}}>
-                        Login
+                        Register
                       </Button>
                     </Form>
                   )}
@@ -116,9 +181,9 @@ export default function Login() {
                 <div className='text-center'>
                   <Button
                     className='btn-link'
-                    href='/register'
+                    href='/login'
                     style={{color: '#FFF'}}>
-                    Register
+                    Login
                   </Button>
                   <Button
                     className='btn-link'

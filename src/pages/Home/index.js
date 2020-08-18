@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import HomeNavbar from '../../components/HomeNavbar';
 // reactstrap components
-import {Container, Row, Col} from 'reactstrap';
+import {Container, Row} from 'reactstrap';
 import HomePageHeader from 'components/HomeHeaders';
 import Footer from 'components/Footer';
 // import {getLastestComics} from '../../services/api';
