@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Card, CardImg, CardBody, CardTitle, Button} from 'reactstrap';
+import {Card, CardImg, CardBody, CardTitle, Button, Col} from 'reactstrap';
 
 export default function CardComic(props) {
   const [comic] = useState(props.comic);
@@ -12,7 +12,7 @@ export default function CardComic(props) {
   }, [comic.images]);
 
   return (
-    <>
+    <Col sm='3' md='3'>
       <Card style={{width: '15rem', height: '32rem'}}>
         <CardImg top src={imageCover} alt='...' />
         <CardBody>
@@ -20,6 +20,6 @@ export default function CardComic(props) {
         </CardBody>
         <Button style={{backgroundColor: '#E62429'}}>Info</Button>
       </Card>
-    </>
+    </Col>
   );
 }

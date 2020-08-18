@@ -1,22 +1,41 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {Link, useHistory} from 'react-router-dom';
 // nodejs library that concatenates strings
 import classnames from 'classnames';
+import defaultUser from 'assets/img/default_user.jpg';
 import logo from 'assets/img/home/icon_iron_man.png';
-import {Navbar, NavItem, NavLink, Nav, Container, Collapse} from 'reactstrap';
+import {
+  Navbar,
+  NavItem,
+  NavLink,
+  Nav,
+  Container,
+  Collapse,
+  Button,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown
+} from 'reactstrap';
+import {isAuthenticated, getUser} from 'services/auth';
+import {logout} from 'services/auth';
 
 export default function HomeNavbar() {
-  const [bodyClick, setBodyClick] = React.useState(false);
-  const [whiteLogo, setWhiteLogo] = React.useState(true);
-  const [navbarColor, setNavbarColor] = React.useState('navbar-transparent');
-  const [navbarCollapse, setNavbarCollapse] = React.useState(false);
+  const [bodyClick, setBodyClick] = useState(false);
+  const [whiteLogo, setWhiteLogo] = useState(true);
+  const [navbarColor, setNavbarColor] = useState('navbar-transparent');
+  const [navbarCollapse, setNavbarCollapse] = useState(false);
+  const [user, setUser] = useState(getUser());
+  const [color, setColor] = useState('white');
+  const history = useHistory();
 
   const toggleNavbarCollapse = () => {
     setNavbarCollapse(!navbarCollapse);
     document.documentElement.classList.toggle('nav-open');
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const updateNavbarColor = () => {
       if (
         document.documentElement.scrollTop > 299 ||
@@ -24,12 +43,14 @@ export default function HomeNavbar() {
       ) {
         setWhiteLogo(false);
         setNavbarColor('');
+        setColor('#858585');
       } else if (
         document.documentElement.scrollTop < 300 ||
         document.body.scrollTop < 300
       ) {
         setWhiteLogo(true);
         setNavbarColor('navbar-transparent');
+        setColor('white');
       }
     };
 
@@ -116,6 +137,79 @@ export default function HomeNavbar() {
             </Nav>
           </Collapse>
         </Container>
+        {isAuthenticated() ? (
+          <>
+            <UncontrolledDropdown>
+              <DropdownToggle nav onClick={(e) => e.preventDefault()}>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginRight: '30px'
+                  }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'flex-end',
+                      marginRight: '16px'
+                    }}>
+                    <strong
+                      style={{
+                        color: `${color}`,
+                        fontSize: '16px',
+                        fontWeight: '500'
+                      }}>
+                      {user.name}
+                    </strong>
+                  </div>
+                  <div
+                    style={{border: '2px solid #E62429', borderRadius: '50%'}}>
+                    <img
+                      src={defaultUser}
+                      style={{
+                        width: '56px',
+                        height: '56px',
+                        borderRadius: '50%'
+                      }}
+                    />
+                  </div>
+                </div>
+              </DropdownToggle>
+              <DropdownMenu className='dropdown-navbar' right tag='ul'>
+                <NavLink tag='li'>
+                  <DropdownItem className='nav-item'>Profile</DropdownItem>
+                </NavLink>
+                <DropdownItem divider tag='li' />
+                <NavLink tag='li'>
+                  <DropdownItem
+                    className='nav-item'
+                    onClick={(e) => {
+                      logout();
+                      history.push('/');
+                    }}>
+                    Log out
+                  </DropdownItem>
+                </NavLink>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </>
+        ) : (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              marginRight: '30px',
+              marginLeft: '95px'
+            }}>
+            <Button className='btn-round mr-1 btn btn-default' href='/login'>
+              Login
+            </Button>
+            <Button className='btn-round mr-1 btn btn-default' href='/register'>
+              Register
+            </Button>
+          </div>
+        )}
       </Navbar>
     </>
   );

@@ -4,16 +4,20 @@ import HomeNavbar from '../../components/HomeNavbar';
 import {Container, Row, Col} from 'reactstrap';
 import HomePageHeader from 'components/HomeHeaders';
 import Footer from 'components/Footer';
-import {getLastestComics} from '../../services/api';
+// import {getLastestComics} from '../../services/api';
 import CardComic from 'components/CardComic';
+
+// mock
+import mockLastestComics from 'services/mockLastestComics.json';
 
 export default function Home() {
   const [lastestComics, setLastestComics] = useState([]);
-  console.log('last', lastestComics);
 
   useEffect(() => {
     (async () => {
-      const data = await getLastestComics();
+      // const response = await getLastestComics().get();
+      //const data = response.data.data.results;
+      const data = mockLastestComics;
       if (JSON.stringify(data) !== '[]') {
         setLastestComics(data);
       }
@@ -27,15 +31,13 @@ export default function Home() {
       <div className='main text-center'>
         <div className='section' style={{backgroundColor: '#202020'}}>
           <Container>
-            <h2 className='title' style={{color: '#FFF'}}>LAST WEEK COMICS </h2>
+            <h2 className='title' style={{color: '#FFF'}}>
+              LAST WEEK COMICS
+            </h2>
             <Row className='col-sm-12 text-center'>
               {lastestComics.length > 0 ? (
                 lastestComics.map((comic) => {
-                  return (
-                    <Col sm='3' md='3'>
-                      <CardComic comic={comic} />
-                    </Col>
-                  );
+                  return <CardComic comic={comic} key={comic.id} />;
                 })
               ) : (
                 <div>Nothing to show...</div>

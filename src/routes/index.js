@@ -1,7 +1,8 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
-import {isAuthenticated} from '../services/api';
+import {isAuthenticated} from '../services/auth';
 import Home from '../pages/Home';
+import Login from 'pages/Login';
 
 const PrivateRoute = ({component: Component, ...rest}) => (
   <Route
@@ -21,6 +22,11 @@ export default function Routes() {
     <BrowserRouter>
       <Switch>
         <Route exact={true} path='/' render={(props) => <Home {...props} />} />
+        <Route
+          exact={true}
+          path='/login'
+          render={(props) => <Login {...props} />}
+        />
         <Route path='*' component={() => <h1>Page not found</h1>} />
       </Switch>
     </BrowserRouter>
