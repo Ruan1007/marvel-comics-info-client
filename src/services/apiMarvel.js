@@ -7,11 +7,16 @@ const timestamp = Number(new Date());
 const hash = md5.create();
 hash.update(timestamp + MARVEL_API_PRIVATE_KEY + MARVEL_API_PUBLIC_KEY);
 
-export const marvelApi = () => {
-  // return axios.create({
-  //   baseURL: `http://gateway.marvel.com/v1/public/comics?dateDescriptor=lastWeek&limit=4&ts=${timestamp}&apikey=${MARVEL_API_PUBLIC_KEY}&hash=${hash.hex()}`
-  // });
-  // let result = response.data;
-  // return result.data.results;
-  return undefined;
+export const marvelApiComics = () => {
+  return axios.create({
+    baseURL: `http://gateway.marvel.com/v1/public/comics?format=comic&dateDescriptor=thisWeek&limit=4&ts=${timestamp}&apikey=${MARVEL_API_PUBLIC_KEY}&hash=${hash.hex()}`
+  });
+  // return undefined;
+};
+
+export const searchComicByTitle = ({title}) => {
+  console.log('title', title);
+  return axios.create({
+    baseURL: `https://gateway.marvel.com:443/v1/public/comics?format=comic&titleStartsWith=${title}&limit=12&ts=${timestamp}&apikey=${MARVEL_API_PUBLIC_KEY}&hash=${hash.hex()}`
+  });
 };

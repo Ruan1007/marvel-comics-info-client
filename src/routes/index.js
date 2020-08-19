@@ -4,6 +4,7 @@ import {isAuthenticated} from '../services/auth';
 import Home from 'pages/Home';
 import Login from 'pages/Login';
 import Register from 'pages/Register';
+import Comic from 'pages/Comic';
 
 const PrivateRoute = ({component: Component, ...rest}) => (
   <Route
@@ -32,6 +33,11 @@ export default function Routes() {
           exact={true}
           path='/register'
           render={(props) => <Register {...props} />}
+        />
+        <Route
+          exact={true}
+          path='/comics'
+          render={(props) => <Comic {...props} />}
         />
         <Route path='*' component={() => <h1>Page not found</h1>} />
       </Switch>

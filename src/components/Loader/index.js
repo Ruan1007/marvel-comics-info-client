@@ -2,14 +2,11 @@ import React, {useState, useEffect} from 'react';
 import {FadeLoader} from 'react-spinners';
 import './styles.css';
 
-export default function Loading({...props}) {
-  console.log('loading');
-  console.log(props);
-  const [isLoading, setIsLoading] = useState(false);
+export default function Loader() {
+  const [isLoading, setIsLoading] = useState(true);
   const [classes, setClasses] = useState('');
 
   useEffect(() => {
-    setIsLoading(props.loading);
     setClasses(
       isLoading ? 'loading-overlay-content' : 'loading-overlay-content hide'
     );

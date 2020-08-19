@@ -1,15 +1,35 @@
 import React, {useState, useEffect} from 'react';
-import {Card, CardImg, CardBody, CardTitle, Button, Col} from 'reactstrap';
+import {
+  Card,
+  CardImg,
+  CardBody,
+  CardTitle,
+  Button,
+  Col,
+  Modal
+} from 'reactstrap';
 
 export default function CardComic(props) {
   const [comic] = useState(props.comic);
-
+  console.log(comic);
   const [imageCover, setImageCover] = useState('');
+  const [modal, setModal] = useState(false);
+  const title = 'COMIC';
 
   useEffect(() => {
     let image = comic.images[0];
-    setImageCover(image.path + '.' + image.extension);
+    if (image) {
+      setImageCover(image.path + '.' + image.extension);
+    } else {
+      setImageCover(
+        'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'
+      );
+    }
   }, [comic.images]);
+
+  const toggle = () => {
+    setModal(!modal);
+  };
 
   return (
     <Col sm='3' md='3'>
@@ -18,7 +38,49 @@ export default function CardComic(props) {
         <CardBody>
           <CardTitle>{comic.title}</CardTitle>
         </CardBody>
-        <Button style={{backgroundColor: '#E62429'}}>Info</Button>
+        <Button style={{backgroundColor: '#E62429'}} onClick={toggle}>
+          Info
+        </Button>
+        <Modal isOpen={modal} toggle={toggle}>
+          <div className='modal-header'>
+            <h5 className='modal-title' id='exampleModalLiveLabel'>
+              {title}
+            </h5>
+            <button
+              aria-label='Close'
+              className='close'
+              data-dismiss='modal'
+              type='button'
+              onClick={() => setModal(false)}>
+              <span aria-hidden={true}>×</span>
+            </button>
+          </div>
+          <div className='modal-body'>
+            <div className='text-center'>
+              <CardImg
+                style={{width: '15rem'}}
+                top
+                src={imageCover}
+                alt='...'
+              />
+              <CardTitle>{comic.title}</CardTitle>
+              <p>
+                <b>Description:</b> {comic.description}
+              </p>
+            </div>
+          </div>
+          <div className='modal-footer'>
+            <div className='left-side'>
+              <Button
+                className='btn-link'
+                color='danger'
+                type='button'
+                onClick={() => setModal(false)}>
+                Close
+              </Button>
+            </div>
+          </div>
+        </Modal>
       </Card>
     </Col>
   );

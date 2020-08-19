@@ -54,6 +54,12 @@ export default function Login() {
             message.push(error.message);
           });
         }
+        toast.error(err.message, {
+          position: 'top-right',
+          autoClose: 5000,
+          closeOnClick: true,
+          pauseOnHover: true
+        });
         return false;
       }
     },
