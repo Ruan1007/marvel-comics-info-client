@@ -52,7 +52,6 @@ export default function Register() {
 
   const handleSubmit = useCallback(
     async (data) => {
-      console.log('register');
       try {
         await RegisterSchema.validate(data, {
           abortEarly: false

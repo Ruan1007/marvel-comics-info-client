@@ -10,16 +10,16 @@ import {toast} from 'react-toastify';
 import {getValidationErrors} from 'utils/ValidationErrors';
 import {searchCharacterByName} from 'services/apiMarvel';
 import CardCharacter from 'components/CardCharacter';
+import Loader from 'components/Loader';
 
 export default function Character() {
   const [characters, setCharacters] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   const SearchSchema = Yup.object().shape({
     name: Yup.string().required(`Search can't be empty`)
   });
 
   const searchCharacters = async (name) => {
-    console.log(name);
     const response = await searchCharacterByName(name).get();
     const data = response.data.data.results;
     if (JSON.stringify(data) !== '[]') {
@@ -41,6 +41,7 @@ export default function Character() {
         closeOnClick: true,
         pauseOnHover: true
       });
+      setIsLoading(false);
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errors = getValidationErrors(err);
@@ -55,12 +56,14 @@ export default function Character() {
         closeOnClick: true,
         pauseOnHover: true
       });
+      setIsLoading(false);
       return false;
     }
   });
 
   return (
     <>
+      {isLoading && <Loader />}
       <HomeNavbar />
       <PagesHeader img={charactersImg} title='SEARCH CHARACTERS' />
       <div className='main text-center'>
@@ -91,7 +94,8 @@ export default function Character() {
                     <Col md='2'>
                       <Button
                         style={{backgroundColor: '#E62429'}}
-                        type='submit'>
+                        type='submit'
+                        onClick={() => setIsLoading(true)}>
                         SEARCH
                       </Button>
                     </Col>

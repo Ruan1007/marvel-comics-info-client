@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {
-  Container,
-  Row,
   Col,
   Button,
   Card,
@@ -16,7 +14,6 @@ export default function CardCharacter({...props}) {
   const [characterImg, setCharacterImg] = useState('');
   const [modal, setModal] = useState(false);
   const title = 'CHARACTER';
-  console.log(character);
 
   useEffect(() => {
     let image = character.thumbnail;

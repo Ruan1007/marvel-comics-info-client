@@ -121,7 +121,7 @@ export default function HomeNavbar() {
               }}>
               <span className='navbar-toggler-icon' />
             </button>
-            <Nav navbar>
+            <Nav navbar className='mr-auto mt-2 mt-lg-0'>
               <NavItem>
                 <NavLink to='/comics' tag={Link}>
                   Comics
@@ -134,81 +134,87 @@ export default function HomeNavbar() {
                 </NavLink>
               </NavItem>
             </Nav>
+            {isAuthenticated() ? (
+              <>
+                <UncontrolledDropdown className='ml-auto'>
+                  <DropdownToggle nav onClick={(e) => e.preventDefault()}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'flex-end'
+                          // marginRight: '16px'
+                        }}>
+                        <strong
+                          style={{
+                            color: `${color}`,
+                            fontSize: '16px',
+                            fontWeight: '500'
+                          }}>
+                          {user.name}
+                        </strong>
+                      </div>
+                      <div
+                        style={{
+                          border: '2px solid #E62429',
+                          borderRadius: '50%',
+                          marginLeft: '10px'
+                        }}>
+                        <img
+                          src={defaultUser}
+                          style={{
+                            width: '56px',
+                            height: '56px',
+                            borderRadius: '50%'
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </DropdownToggle>
+                  <DropdownMenu className='dropdown-navbar' right tag='ul'>
+                    <NavLink tag='li'>
+                      <DropdownItem className='nav-item'>Profile</DropdownItem>
+                    </NavLink>
+                    <DropdownItem divider tag='li' />
+                    <NavLink tag='li'>
+                      <DropdownItem
+                        className='nav-item'
+                        onClick={(e) => {
+                          logout();
+                          history.push('/');
+                        }}>
+                        Log out
+                      </DropdownItem>
+                    </NavLink>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+              </>
+            ) : (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginLeft: '95px'
+                }}>
+                <Button
+                  className='btn-round mr-1 btn btn-default'
+                  href='/login'>
+                  Login
+                </Button>
+                <Button
+                  className='btn-round mr-1 btn btn-default'
+                  href='/register'>
+                  Register
+                </Button>
+              </div>
+            )}
           </Collapse>
         </Container>
-        {isAuthenticated() ? (
-          <>
-            <UncontrolledDropdown>
-              <DropdownToggle nav onClick={(e) => e.preventDefault()}>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    marginRight: '30px'
-                  }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-end',
-                      marginRight: '16px'
-                    }}>
-                    <strong
-                      style={{
-                        color: `${color}`,
-                        fontSize: '16px',
-                        fontWeight: '500'
-                      }}>
-                      {user.name}
-                    </strong>
-                  </div>
-                  <div
-                    style={{border: '2px solid #E62429', borderRadius: '50%'}}>
-                    <img
-                      src={defaultUser}
-                      style={{
-                        width: '56px',
-                        height: '56px',
-                        borderRadius: '50%'
-                      }}
-                    />
-                  </div>
-                </div>
-              </DropdownToggle>
-              <DropdownMenu className='dropdown-navbar' right tag='ul'>
-                <NavLink tag='li'>
-                  <DropdownItem className='nav-item'>Profile</DropdownItem>
-                </NavLink>
-                <DropdownItem divider tag='li' />
-                <NavLink tag='li'>
-                  <DropdownItem
-                    className='nav-item'
-                    onClick={(e) => {
-                      logout();
-                      history.push('/');
-                    }}>
-                    Log out
-                  </DropdownItem>
-                </NavLink>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          </>
-        ) : (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginRight: '30px',
-              marginLeft: '95px'
-            }}>
-            <Button className='btn-round mr-1 btn btn-default' href='/login'>
-              Login
-            </Button>
-            <Button className='btn-round mr-1 btn btn-default' href='/register'>
-              Register
-            </Button>
-          </div>
-        )}
       </Navbar>
     </>
   );

@@ -11,9 +11,11 @@ import {searchComicByTitle} from 'services/apiMarvel';
 import {getValidationErrors} from 'utils/ValidationErrors';
 import {toast} from 'react-toastify';
 import CardComic from 'components/CardComic';
+import Loader from 'components/Loader';
 
 export default function Comic() {
   const [comics, setComics] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const SearchSchema = Yup.object().shape({
     title: Yup.string().required(`Search can't be empty`)
@@ -41,6 +43,7 @@ export default function Comic() {
         closeOnClick: true,
         pauseOnHover: true
       });
+      setIsLoading(false);
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errors = getValidationErrors(err);
@@ -55,12 +58,14 @@ export default function Comic() {
         closeOnClick: true,
         pauseOnHover: true
       });
+      setIsLoading(false);
       return false;
     }
   });
 
   return (
     <>
+      {isLoading && <Loader />}
       <HomeNavbar />
       <PagesHeader img={comicsImg} title='SEARCH COMICS' />
       <div className='main text-center'>
@@ -91,7 +96,8 @@ export default function Comic() {
                     <Col md='2'>
                       <Button
                         style={{backgroundColor: '#E62429'}}
-                        type='submit'>
+                        type='submit'
+                        onClick={() => setIsLoading(true)}>
                         SEARCH
                       </Button>
                     </Col>

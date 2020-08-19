@@ -5,15 +5,13 @@ import uncleBen from 'services/mockUncleBen.json';
 export default function HomePageHeader() {
   let pageHeader = createRef();
 
-  const [title, setTitle] = useState('CHARACTER');
-  const [description, setDescription] = useState('');
+  const [title] = useState('CHARACTER');
   const [modal, setModal] = useState(false);
   const [characterImage, setCharacterImage] = useState('');
 
   const [character, setCharacter] = useState({});
 
   const getCharacterUncleBen = () => {
-    console.log(uncleBen.data.results[0]);
     const character = uncleBen.data.results[0];
 
     setCharacterImage(
@@ -57,9 +55,7 @@ export default function HomePageHeader() {
         <div className='content-center'>
           <Container>
             <div className='motto text-center'>
-              <span style={{fontFamily: 'italic', fontSize: '40px'}}>
-                MARVEL COMICS
-              </span>
+              <span style={{fontSize: '40px'}}>MARVEL COMICS</span>
               <h3>"With great power comes great responsibility!"</h3>
               <br />
               <Button

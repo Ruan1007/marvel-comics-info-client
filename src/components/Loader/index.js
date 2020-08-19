@@ -3,7 +3,7 @@ import {FadeLoader} from 'react-spinners';
 import './styles.css';
 
 export default function Loader() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading] = useState(true);
   const [classes, setClasses] = useState('');
 
   useEffect(() => {
