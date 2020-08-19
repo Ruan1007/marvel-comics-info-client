@@ -15,8 +15,13 @@ export const marvelApiComics = () => {
 };
 
 export const searchComicByTitle = ({title}) => {
-  console.log('title', title);
   return axios.create({
     baseURL: `https://gateway.marvel.com:443/v1/public/comics?format=comic&titleStartsWith=${title}&limit=12&ts=${timestamp}&apikey=${MARVEL_API_PUBLIC_KEY}&hash=${hash.hex()}`
+  });
+};
+
+export const searchCharacterByName = ({name}) => {
+  return axios.create({
+    baseURL: `https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=${name}&limit=12&ts=${timestamp}&apikey=${MARVEL_API_PUBLIC_KEY}&hash=${hash.hex()}`
   });
 };

@@ -5,6 +5,7 @@ import Home from 'pages/Home';
 import Login from 'pages/Login';
 import Register from 'pages/Register';
 import Comic from 'pages/Comic';
+import Character from 'pages/Character';
 
 const PrivateRoute = ({component: Component, ...rest}) => (
   <Route
@@ -38,6 +39,11 @@ export default function Routes() {
           exact={true}
           path='/comics'
           render={(props) => <Comic {...props} />}
+        />
+        <Route
+          exact={true}
+          path='/characters'
+          render={(props) => <Character {...props} />}
         />
         <Route path='*' component={() => <h1>Page not found</h1>} />
       </Switch>

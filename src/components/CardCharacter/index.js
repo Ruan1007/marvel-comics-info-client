@@ -1,30 +1,33 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  Container,
+  Row,
+  Col,
+  Button,
   Card,
   CardImg,
   CardBody,
   CardTitle,
-  Button,
-  Col,
   Modal
 } from 'reactstrap';
 
-export default function CardComic(props) {
-  const [comic] = useState(props.comic);
-  const [imageCover, setImageCover] = useState('');
+export default function CardCharacter({...props}) {
+  const [character] = useState(props.character);
+  const [characterImg, setCharacterImg] = useState('');
   const [modal, setModal] = useState(false);
-  const title = 'COMIC';
+  const title = 'CHARACTER';
+  console.log(character);
 
   useEffect(() => {
-    let image = comic.images[0];
+    let image = character.thumbnail;
     if (image) {
-      setImageCover(image.path + '.' + image.extension);
+      setCharacterImg(image.path + '.' + image.extension);
     } else {
-      setImageCover(
+      setCharacterImg(
         'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'
       );
     }
-  }, [comic.images]);
+  }, [character.images]);
 
   const toggle = () => {
     setModal(!modal);
@@ -32,10 +35,15 @@ export default function CardComic(props) {
 
   return (
     <Col sm='3' md='3'>
-      <Card style={{width: '15rem', height: '32rem'}}>
-        <CardImg top src={imageCover} alt='...' />
+      <Card style={{width: '15rem', height: '25rem'}}>
+        <CardImg
+          top
+          src={characterImg}
+          alt='...'
+          style={{width: '240px', height: '240px'}}
+        />
         <CardBody>
-          <CardTitle>{comic.title}</CardTitle>
+          <CardTitle>{character.name}</CardTitle>
         </CardBody>
         <Button style={{backgroundColor: '#E62429'}} onClick={toggle}>
           Info
@@ -59,12 +67,12 @@ export default function CardComic(props) {
               <CardImg
                 style={{width: '15rem'}}
                 top
-                src={imageCover}
+                src={characterImg}
                 alt='...'
               />
-              <CardTitle>{comic.title}</CardTitle>
+              <CardTitle>{character.name}</CardTitle>
               <p>
-                <b>Description:</b> {comic.description}
+                <b>Description:</b> {character.description}
               </p>
             </div>
           </div>
