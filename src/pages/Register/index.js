@@ -46,6 +46,7 @@ export default function Register() {
     });
 
     const {token, user} = response.data;
+    api.defaults.headers['Authorization'] = `Bearer ${token}`;
     setUser(JSON.stringify(user));
     setToken(token);
   };

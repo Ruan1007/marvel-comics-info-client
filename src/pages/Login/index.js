@@ -22,6 +22,8 @@ export default function Login() {
       password
     });
     const {token, user} = response.data;
+
+    api.defaults.headers['Authorization'] = `Bearer ${token}`;
     setUser(JSON.stringify(user));
     setToken(token);
   };

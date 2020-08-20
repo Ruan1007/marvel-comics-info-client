@@ -148,7 +148,6 @@ export default function HomeNavbar() {
                           display: 'flex',
                           flexDirection: 'column',
                           alignItems: 'flex-end'
-                          // marginRight: '16px'
                         }}>
                         <strong
                           style={{
@@ -166,7 +165,7 @@ export default function HomeNavbar() {
                           marginLeft: '10px'
                         }}>
                         <img
-                          src={defaultUser}
+                          src={user.image ? user.image : defaultUser}
                           style={{
                             width: '56px',
                             height: '56px',
@@ -177,7 +176,7 @@ export default function HomeNavbar() {
                     </div>
                   </DropdownToggle>
                   <DropdownMenu className='dropdown-navbar' right tag='ul'>
-                    <NavLink tag='li'>
+                    <NavLink tag='li' to='/profile' tag={Link}>
                       <DropdownItem className='nav-item'>Profile</DropdownItem>
                     </NavLink>
                     <DropdownItem divider tag='li' />

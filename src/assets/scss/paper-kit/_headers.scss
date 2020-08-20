@@ -16,6 +16,9 @@
     &.page-header-xs{
         min-height: 40vh !important;
     }
+    &.page-header-min{
+        min-height: 20vh !important;
+    }
 
     .page-header-image{
         position: absolute;

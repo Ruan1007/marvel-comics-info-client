@@ -1,16 +1,16 @@
 import React, {useState, useCallback} from 'react';
-import HomeNavbar from 'components/HomeNavbar';
 import PagesHeader from 'components/PagesHeader';
 import {Container, Row, Col, Button} from 'reactstrap';
 import {Formik, Form, Field} from 'formik';
 import charactersImg from 'assets/img/character/characters.jpg';
-import Footer from 'components/Footer';
 import * as Yup from 'yup';
 import {toast} from 'react-toastify';
 import {getValidationErrors} from 'utils/ValidationErrors';
 import {searchCharacterByName} from 'services/apiMarvel';
 import CardCharacter from 'components/CardCharacter';
 import Loader from 'components/Loader';
+import Footer from 'components/Footer';
+import HomeNavbar from 'components/HomeNavbar';
 
 export default function Character() {
   const [characters, setCharacters] = useState([]);

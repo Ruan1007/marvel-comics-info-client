@@ -6212,6 +6212,9 @@ License - nucleoapp.com/license/
 .page-header.page-header-xs {
   min-height: 40vh !important;
 }
+.page-header.page-header-min {
+  min-height: 20vh !important;
+}
 .page-header.section-dark .content-center,
 .page-header.section-dark .category-absolute {
   z-index: 1;
