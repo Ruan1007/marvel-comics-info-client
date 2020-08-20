@@ -7,6 +7,8 @@ import Register from 'pages/Register';
 import Comic from 'pages/Comic';
 import Character from 'pages/Character';
 import Profile from 'pages/Profile';
+import NotFound from 'pages/NotFound';
+import RatedComic from 'pages/RatedComic';
 
 const PrivateRoute = ({component: Component, ...rest}) => (
   <Route
@@ -48,10 +50,15 @@ export default function Routes() {
         />
         <PrivateRoute
           exact={true}
+          path='/rated-comics'
+          component={(props) => <RatedComic {...props} />}
+        />
+        <PrivateRoute
+          exact={true}
           path='/profile'
           component={(props) => <Profile {...props} />}
         />
-        <Route path='*' component={() => <h1>Page not found</h1>} />
+        <Route path='*' render={(props) => <NotFound {...props} />} />
       </Switch>
     </BrowserRouter>
   );

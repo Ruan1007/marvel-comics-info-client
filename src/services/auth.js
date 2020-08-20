@@ -1,5 +1,8 @@
-export const TOKEN_KEY = '@Marvel:token';
-export const USER_KEY = '@Marvel:user';
+const TOKEN_KEY = '@Marvel:token';
+const USER_KEY = '@Marvel:user';
+const COMICS_KEY = '@Marvel:comics';
+const CHARACTERS_KEY = '@Marvel:characters';
+
 export const isAuthenticated = () => localStorage.getItem(TOKEN_KEY) !== null;
 export const setUser = (user) => {
   localStorage.setItem(USER_KEY, user);
@@ -12,4 +15,26 @@ export const getToken = () => localStorage.getItem(TOKEN_KEY);
 export const logout = () => {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(USER_KEY);
+  localStorage.removeItem(COMICS_KEY);
+  localStorage.removeItem(CHARACTERS_KEY);
+};
+export const getRatedComics = () =>
+  JSON.parse(localStorage.getItem(COMICS_KEY));
+
+export const setRatedComics = (comics) => {
+  localStorage.setItem(COMICS_KEY, comics);
+};
+
+export const setNewRateComic = (comic) => {
+  const comics =
+    getRatedComics() !== null && getRatedComics() !== undefined
+      ? getRatedComics()
+      : [];
+
+  const comicsFilter = comics.filter((ratedComic) => {
+    return ratedComic._id !== comic._id;
+  });
+
+  comicsFilter.push(comic);
+  localStorage.setItem(COMICS_KEY, JSON.stringify(comicsFilter));
 };

@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import {useHistory} from 'react-router-dom';
 import {Formik, Form, Field} from 'formik';
 import {toast} from 'react-toastify';
-import {setUser, setToken} from 'services/auth';
+import {setUser, setToken, setRatedComics} from 'services/auth';
 
 export default function Login() {
   const history = useHistory();
@@ -27,6 +27,12 @@ export default function Login() {
     setToken(token);
   };
 
+  const getRatedComics = async () => {
+    const response = await api.get('comic/');
+    const comics = response.data;
+    setRatedComics(JSON.stringify(comics));
+  };
+
   const handleSubmit = useCallback(
     async (data) => {
       try {
@@ -38,6 +44,8 @@ export default function Login() {
           email: data.email,
           password: data.password
         });
+
+        await getRatedComics();
 
         toast.success('Login Successfully', {
           position: 'top-right',

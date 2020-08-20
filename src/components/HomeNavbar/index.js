@@ -36,15 +36,15 @@ export default function HomeNavbar() {
   useEffect(() => {
     const updateNavbarColor = () => {
       if (
-        document.documentElement.scrollTop > 299 ||
-        document.body.scrollTop > 299
+        document.documentElement.scrollTop > 99 ||
+        document.body.scrollTop > 99
       ) {
         setWhiteLogo(false);
         setNavbarColor('');
         setColor('#858585');
       } else if (
-        document.documentElement.scrollTop < 300 ||
-        document.body.scrollTop < 300
+        document.documentElement.scrollTop < 100 ||
+        document.body.scrollTop < 100
       ) {
         setWhiteLogo(true);
         setNavbarColor('navbar-transparent');
@@ -178,6 +178,11 @@ export default function HomeNavbar() {
                   <DropdownMenu className='dropdown-navbar' right tag='ul'>
                     <NavLink to='/profile' tag={Link}>
                       <DropdownItem className='nav-item'>Profile</DropdownItem>
+                    </NavLink>
+                    <NavLink to='/rated-comics' tag={Link}>
+                      <DropdownItem className='nav-item'>
+                        My rated comics
+                      </DropdownItem>
                     </NavLink>
                     <DropdownItem divider tag='li' />
                     <NavLink tag='li'>

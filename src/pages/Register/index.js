@@ -10,7 +10,7 @@ import DatePicker from 'reactstrap-date-picker';
 
 export default function Register() {
   const [date, setDate] = useState();
-  const [setFormattedDate] = useState();
+  const [formattedValue, setFormattedDate] = useState();
   const history = useHistory();
 
   const handleChange = (value, formattedValue) => {
@@ -167,6 +167,7 @@ export default function Register() {
                       {errors.birthDate && touched.birthDate ? (
                         <div style={{color: 'red'}}>{errors.birthDate}</div>
                       ) : null}
+                      <p hidden>{formattedValue}</p>
                       <Button
                         block
                         type='submit'

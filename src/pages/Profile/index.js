@@ -16,7 +16,7 @@ import Loader from 'components/Loader';
 export default function Profile() {
   const [user] = useState(getUser());
   const [date, setDate] = useState(user.birthDate);
-  const [setFormattedDate] = useState();
+  const [formattedValue, setFormattedDate] = useState();
   const [profileImg, setProfileImg] = useState(user.image);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -132,9 +132,10 @@ export default function Profile() {
             </div>
           </div>
           <Row>
-            <Col className='ml-auto mr-auto ' md='6'>
+            <Col className='ml-auto mr-auto ' md='4'>
               <ImageUploader
                 withIcon={true}
+                buttonText='Change image'
                 onChange={(e) => {
                   updateProfileImage(e);
                   setIsLoading(true);
@@ -220,6 +221,7 @@ export default function Profile() {
                     {errors.birthDate && touched.birthDate ? (
                       <div style={{color: 'red'}}>{errors.birthDate}</div>
                     ) : null}
+                    <p hidden>{formattedValue}</p>
                     <br />
                     <Button
                       block

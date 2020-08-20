@@ -6,23 +6,22 @@ import HomePageHeader from 'components/HomeHeaders';
 import Footer from 'components/Footer';
 import CardComic from 'components/CardComic';
 
-// mock
-import mockLastestComics from 'services/mockLastestComics.json';
-// import {marvelApiComics} from 'services/apiMarvel';
+import {marvelApiComics} from 'services/apiMarvel';
 
 export default function Home() {
   const [lastestComics, setLastestComics] = useState([]);
 
+  const getThisWeekComics = async () => {
+    const response = await marvelApiComics().get();
+    const data = response.data.data.results;
+    if (JSON.stringify(data) !== '[]') {
+      setLastestComics(data);
+    }
+  };
+
   useEffect(() => {
-    (async () => {
-      // const response = await marvelApiComics().get();
-      // const data = response.data.data.results;
-      const data = mockLastestComics;
-      if (JSON.stringify(data) !== '[]') {
-        setLastestComics(data);
-      }
-    })();
-  });
+    getThisWeekComics();
+  }, []);
 
   return (
     <>
