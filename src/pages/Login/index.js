@@ -1,9 +1,8 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import {Container, Row, Col, Card, Button} from 'reactstrap';
 import api from 'services/api';
 import * as Yup from 'yup';
 import {useHistory} from 'react-router-dom';
-import {getValidationErrors} from 'utils/ValidationErrors';
 import {Formik, Form, Field} from 'formik';
 import {toast} from 'react-toastify';
 import {setUser, setToken} from 'services/auth';
@@ -49,13 +48,6 @@ export default function Login() {
 
         return history.push('/');
       } catch (err) {
-        if (err instanceof Yup.ValidationError) {
-          const errors = getValidationErrors(err);
-          let message = [];
-          errors.map((error) => {
-            message.push(error.message);
-          });
-        }
         toast.error(err.message, {
           position: 'top-right',
           autoClose: 5000,
@@ -65,7 +57,7 @@ export default function Login() {
         return false;
       }
     },
-    [login, history]
+    [history, LoginSchema]
   );
 
   return (
@@ -114,8 +106,7 @@ export default function Login() {
                       <Button
                         block
                         type='submit'
-                        className='btn-round'
-                        style={{backgroundColor: '#E62429'}}>
+                        className='btn btn-danger btn-round'>
                         Login
                       </Button>
                     </Form>

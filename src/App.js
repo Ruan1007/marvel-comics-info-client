@@ -1,5 +1,5 @@
-import React, {useState, useMemo} from 'react';
-import {BrowserRouter as Router, useHistory} from 'react-router-dom';
+import React from 'react';
+import {BrowserRouter as Router} from 'react-router-dom';
 import Routes from './routes';
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

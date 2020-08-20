@@ -8,8 +8,6 @@ const api = axios.create({
 
 api.interceptors.request.use(
   async (config) => {
-    console.log('carai');
-    console.log(getToken());
     if (getToken()) {
       config.headers.Authorization = `Bearer ${getToken()}`;
     }

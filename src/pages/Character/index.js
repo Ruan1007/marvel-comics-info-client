@@ -5,7 +5,6 @@ import {Formik, Form, Field} from 'formik';
 import charactersImg from 'assets/img/character/characters.jpg';
 import * as Yup from 'yup';
 import {toast} from 'react-toastify';
-import {getValidationErrors} from 'utils/ValidationErrors';
 import {searchCharacterByName} from 'services/apiMarvel';
 import CardCharacter from 'components/CardCharacter';
 import Loader from 'components/Loader';
@@ -27,39 +26,35 @@ export default function Character() {
     }
   };
 
-  const handleSubmit = useCallback(async (data) => {
-    try {
-      setCharacters([]);
-      await SearchSchema.validate(data, {
-        abortEarly: false
-      });
-
-      await searchCharacters({name: data.name});
-      toast.success('Search Successfully', {
-        position: 'top-right',
-        autoClose: 5000,
-        closeOnClick: true,
-        pauseOnHover: true
-      });
-      setIsLoading(false);
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(err);
-        let message = [];
-        errors.map((error) => {
-          message.push(error.message);
+  const handleSubmit = useCallback(
+    async (data) => {
+      try {
+        setCharacters([]);
+        await SearchSchema.validate(data, {
+          abortEarly: false
         });
+
+        await searchCharacters({name: data.name});
+        toast.success('Search Successfully', {
+          position: 'top-right',
+          autoClose: 5000,
+          closeOnClick: true,
+          pauseOnHover: true
+        });
+        setIsLoading(false);
+      } catch (err) {
+        toast.error(err.message, {
+          position: 'top-right',
+          autoClose: 5000,
+          closeOnClick: true,
+          pauseOnHover: true
+        });
+        setIsLoading(false);
+        return false;
       }
-      toast.error(err.message, {
-        position: 'top-right',
-        autoClose: 5000,
-        closeOnClick: true,
-        pauseOnHover: true
-      });
-      setIsLoading(false);
-      return false;
-    }
-  });
+    },
+    [SearchSchema]
+  );
 
   return (
     <>
@@ -93,7 +88,7 @@ export default function Character() {
                     </Col>
                     <Col md='2'>
                       <Button
-                        style={{backgroundColor: '#E62429'}}
+                        className='btn btn-danger'
                         type='submit'
                         onClick={() => setIsLoading(true)}>
                         SEARCH

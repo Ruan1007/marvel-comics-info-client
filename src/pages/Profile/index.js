@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import HomeNavbar from 'components/HomeNavbar';
 import ProfileHeader from 'components/ProfileHeader';
 import {Container, Row, Col, Button} from 'reactstrap';
@@ -8,14 +8,17 @@ import {Formik, Form, Field} from 'formik';
 import * as Yup from 'yup';
 import DatePicker from 'reactstrap-date-picker';
 import api from 'services/api';
-import {getUser, setUser, setToken} from 'services/auth';
+import {getUser, setUser} from 'services/auth';
 import {toast} from 'react-toastify';
-import {getValidationErrors} from 'utils/ValidationErrors';
+import ImageUploader from 'react-images-upload';
+import Loader from 'components/Loader';
 
 export default function Profile() {
   const [user] = useState(getUser());
   const [date, setDate] = useState(user.birthDate);
-  const [formattedDate, setFormattedDate] = useState();
+  const [setFormattedDate] = useState();
+  const [profileImg, setProfileImg] = useState(user.image);
+  const [isLoading, setIsLoading] = useState(false);
 
   const ProfileSchema = Yup.object().shape({
     name: Yup.string(),
@@ -29,6 +32,37 @@ export default function Profile() {
   const handleChange = (value, formattedValue) => {
     setDate(value);
     setFormattedDate(formattedValue);
+  };
+
+  const updateProfileImage = async (image) => {
+    try {
+      const configMultipart = {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      };
+
+      const formData = new FormData();
+      formData.append('image', image[0]);
+
+      const response = await api.post(
+        'image/upload-profile-image',
+        formData,
+        configMultipart
+      );
+
+      const user = response.data;
+      setUser(JSON.stringify(user));
+      setProfileImg(user.image);
+      setIsLoading(false);
+    } catch (err) {
+      toast.error(err.message, {
+        position: 'top-right',
+        autoClose: 5000,
+        closeOnClick: true,
+        pauseOnHover: true
+      });
+    }
   };
 
   const updateProfile = async (profileUpdated) => {
@@ -61,13 +95,6 @@ export default function Profile() {
           pauseOnHover: true
         });
       } catch (err) {
-        if (err instanceof Yup.ValidationError) {
-          const errors = getValidationErrors(err);
-          let message = [];
-          errors.map((error) => {
-            message.push(error.message);
-          });
-        }
         toast.error(err.message, {
           position: 'top-right',
           autoClose: 5000,
@@ -77,11 +104,12 @@ export default function Profile() {
         return false;
       }
     },
-    [updateProfile]
+    [ProfileSchema]
   );
 
   return (
     <>
+      {isLoading && <Loader />}
       <HomeNavbar />
       <ProfileHeader />
       <div className='section profile-content'>
@@ -96,7 +124,7 @@ export default function Profile() {
                   width: '300px',
                   height: '150px'
                 }}
-                src={user.image ? user.image : defaultProfileImg}
+                src={profileImg ? profileImg : defaultProfileImg}
               />
             </div>
             <div className='name'>
@@ -105,6 +133,16 @@ export default function Profile() {
           </div>
           <Row>
             <Col className='ml-auto mr-auto ' md='6'>
+              <ImageUploader
+                withIcon={true}
+                onChange={(e) => {
+                  updateProfileImage(e);
+                  setIsLoading(true);
+                }}
+                accept='accept=image/*'
+                imgExtension={['.jpg', '.png']}
+                maxFileSize={5242880}
+              />
               <Formik
                 initialValues={{
                   name: user.name,
@@ -186,8 +224,7 @@ export default function Profile() {
                     <Button
                       block
                       type='submit'
-                      className='btn-round'
-                      style={{backgroundColor: '#E62429'}}>
+                      className='btn btn-danger btn-round'>
                       Update
                     </Button>
                   </Form>

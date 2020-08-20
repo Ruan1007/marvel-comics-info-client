@@ -5,13 +5,12 @@ import api from 'services/api';
 import {setUser, setToken} from 'services/auth';
 import {toast} from 'react-toastify';
 import {Formik, Form, Field} from 'formik';
-import {getValidationErrors} from 'utils/ValidationErrors';
 import {Container, Row, Col, Card, Button} from 'reactstrap';
 import DatePicker from 'reactstrap-date-picker';
 
 export default function Register() {
   const [date, setDate] = useState();
-  const [formattedDate, setFormattedDate] = useState();
+  const [setFormattedDate] = useState();
   const history = useHistory();
 
   const handleChange = (value, formattedValue) => {
@@ -75,17 +74,17 @@ export default function Register() {
 
         return history.push('/');
       } catch (err) {
-        if (err instanceof Yup.ValidationError) {
-          const errors = getValidationErrors(err);
-          let message = [];
-          errors.map((error) => {
-            message.push(error.message);
-          });
-        }
+        toast.error(err.message, {
+          position: 'top-right',
+          autoClose: 5000,
+          closeOnClick: true,
+          pauseOnHover: true
+        });
+
         return false;
       }
     },
-    [register, history]
+    [history, RegisterSchema]
   );
 
   return (
@@ -171,8 +170,7 @@ export default function Register() {
                       <Button
                         block
                         type='submit'
-                        className='btn-round'
-                        style={{backgroundColor: '#E62429'}}>
+                        className='btn btn-danger btn-round'>
                         Register
                       </Button>
                     </Form>

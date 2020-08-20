@@ -24,7 +24,7 @@ export default function CardCharacter({...props}) {
         'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'
       );
     }
-  }, [character.images]);
+  }, [character.thumbnail]);
 
   const toggle = () => {
     setModal(!modal);
@@ -42,7 +42,7 @@ export default function CardCharacter({...props}) {
         <CardBody>
           <CardTitle>{character.name}</CardTitle>
         </CardBody>
-        <Button style={{backgroundColor: '#E62429'}} onClick={toggle}>
+        <Button className='btn btn-danger' onClick={toggle}>
           Info
         </Button>
         <Modal isOpen={modal} toggle={toggle}>
@@ -68,9 +68,11 @@ export default function CardCharacter({...props}) {
                 alt='...'
               />
               <CardTitle>{character.name}</CardTitle>
-              <p>
-                <b>Description:</b> {character.description}
-              </p>
+              {character.description ? (
+                <p>
+                  <b>Description:</b> {character.description}
+                </p>
+              ) : null}
             </div>
           </div>
           <div className='modal-footer'>

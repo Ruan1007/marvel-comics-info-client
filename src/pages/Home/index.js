@@ -8,7 +8,7 @@ import CardComic from 'components/CardComic';
 
 // mock
 import mockLastestComics from 'services/mockLastestComics.json';
-import {marvelApiComics} from 'services/apiMarvel';
+// import {marvelApiComics} from 'services/apiMarvel';
 
 export default function Home() {
   const [lastestComics, setLastestComics] = useState([]);

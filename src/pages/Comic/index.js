@@ -8,7 +8,6 @@ import {Container, Row, Col, Button} from 'reactstrap';
 import {Formik, Form, Field} from 'formik';
 import * as Yup from 'yup';
 import {searchComicByTitle} from 'services/apiMarvel';
-import {getValidationErrors} from 'utils/ValidationErrors';
 import {toast} from 'react-toastify';
 import CardComic from 'components/CardComic';
 import Loader from 'components/Loader';
@@ -29,39 +28,35 @@ export default function Comic() {
     }
   };
 
-  const handleSubmit = useCallback(async (data) => {
-    try {
-      setComics([]);
-      await SearchSchema.validate(data, {
-        abortEarly: false
-      });
-
-      await searchComics({title: data.title});
-      toast.success('Search Successfully', {
-        position: 'top-right',
-        autoClose: 5000,
-        closeOnClick: true,
-        pauseOnHover: true
-      });
-      setIsLoading(false);
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(err);
-        let message = [];
-        errors.map((error) => {
-          message.push(error.message);
+  const handleSubmit = useCallback(
+    async (data) => {
+      try {
+        setComics([]);
+        await SearchSchema.validate(data, {
+          abortEarly: false
         });
+
+        await searchComics({title: data.title});
+        toast.success('Search Successfully', {
+          position: 'top-right',
+          autoClose: 5000,
+          closeOnClick: true,
+          pauseOnHover: true
+        });
+        setIsLoading(false);
+      } catch (err) {
+        toast.error(err.message, {
+          position: 'top-right',
+          autoClose: 5000,
+          closeOnClick: true,
+          pauseOnHover: true
+        });
+        setIsLoading(false);
+        return false;
       }
-      toast.error(err.message, {
-        position: 'top-right',
-        autoClose: 5000,
-        closeOnClick: true,
-        pauseOnHover: true
-      });
-      setIsLoading(false);
-      return false;
-    }
-  });
+    },
+    [SearchSchema]
+  );
 
   return (
     <>
@@ -95,7 +90,7 @@ export default function Comic() {
                     </Col>
                     <Col md='2'>
                       <Button
-                        style={{backgroundColor: '#E62429'}}
+                        className='btn btn-danger'
                         type='submit'
                         onClick={() => setIsLoading(true)}>
                         SEARCH

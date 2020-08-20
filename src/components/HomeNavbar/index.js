@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {Link, useHistory} from 'react-router-dom';
-// nodejs library that concatenates strings
 import classnames from 'classnames';
 import defaultUser from 'assets/img/default_user.jpg';
 import logo from 'assets/img/home/icon_iron_man.png';
@@ -25,7 +24,7 @@ export default function HomeNavbar() {
   const [whiteLogo, setWhiteLogo] = useState(true);
   const [navbarColor, setNavbarColor] = useState('navbar-transparent');
   const [navbarCollapse, setNavbarCollapse] = useState(false);
-  const [user, setUser] = useState(getUser());
+  const [user] = useState(getUser());
   const [color, setColor] = useState('white');
   const history = useHistory();
 
@@ -165,6 +164,7 @@ export default function HomeNavbar() {
                           marginLeft: '10px'
                         }}>
                         <img
+                          alt='...'
                           src={user.image ? user.image : defaultUser}
                           style={{
                             width: '56px',
@@ -176,7 +176,7 @@ export default function HomeNavbar() {
                     </div>
                   </DropdownToggle>
                   <DropdownMenu className='dropdown-navbar' right tag='ul'>
-                    <NavLink tag='li' to='/profile' tag={Link}>
+                    <NavLink to='/profile' tag={Link}>
                       <DropdownItem className='nav-item'>Profile</DropdownItem>
                     </NavLink>
                     <DropdownItem divider tag='li' />

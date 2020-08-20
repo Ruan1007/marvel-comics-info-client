@@ -37,7 +37,7 @@ export default function CardComic(props) {
         <CardBody>
           <CardTitle>{comic.title}</CardTitle>
         </CardBody>
-        <Button style={{backgroundColor: '#E62429'}} onClick={toggle}>
+        <Button className='btn btn-danger' onClick={toggle}>
           Info
         </Button>
         <Modal isOpen={modal} toggle={toggle}>
@@ -63,9 +63,11 @@ export default function CardComic(props) {
                 alt='...'
               />
               <CardTitle>{comic.title}</CardTitle>
-              <p>
-                <b>Description:</b> {comic.description}
-              </p>
+              {comic.description ? (
+                <p>
+                  <b>Description:</b> {comic.description}
+                </p>
+              ) : null}
             </div>
           </div>
           <div className='modal-footer'>
