@@ -9,6 +9,7 @@ import Character from 'pages/Character';
 import Profile from 'pages/Profile';
 import NotFound from 'pages/NotFound';
 import RatedComic from 'pages/RatedComic';
+import RatedCharacter from 'pages/RatedCharacter';
 
 const PrivateRoute = ({component: Component, ...rest}) => (
   <Route
@@ -47,6 +48,11 @@ export default function Routes() {
           exact={true}
           path='/characters'
           render={(props) => <Character {...props} />}
+        />
+        <PrivateRoute
+          exact={true}
+          path='/rated-characters'
+          component={(props) => <RatedCharacter {...props} />}
         />
         <PrivateRoute
           exact={true}

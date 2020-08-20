@@ -184,6 +184,11 @@ export default function HomeNavbar() {
                         My rated comics
                       </DropdownItem>
                     </NavLink>
+                    <NavLink to='/rated-characters' tag={Link}>
+                      <DropdownItem className='nav-item'>
+                        My rated characters
+                      </DropdownItem>
+                    </NavLink>
                     <DropdownItem divider tag='li' />
                     <NavLink tag='li'>
                       <DropdownItem

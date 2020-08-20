@@ -27,7 +27,7 @@ export const searchCharacterByName = ({name}) => {
   });
 };
 
-export const getComicByUrl = (url) => {
+export const getByUrl = (url) => {
   return axios.create({
     baseURL: `${url}?ts=${timestamp}&apikey=${MARVEL_API_PUBLIC_KEY}&hash=${hash.hex()}`
   });

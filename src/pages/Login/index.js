@@ -6,6 +6,7 @@ import {useHistory} from 'react-router-dom';
 import {Formik, Form, Field} from 'formik';
 import {toast} from 'react-toastify';
 import {setUser, setToken, setRatedComics} from 'services/auth';
+import {setRatedCharacters} from 'services/auth';
 
 export default function Login() {
   const history = useHistory();
@@ -33,6 +34,12 @@ export default function Login() {
     setRatedComics(JSON.stringify(comics));
   };
 
+  const getRatedCharacters = async () => {
+    const response = await api.get('character/');
+    const characters = response.data;
+    setRatedCharacters(JSON.stringify(characters));
+  };
+
   const handleSubmit = useCallback(
     async (data) => {
       try {
@@ -46,6 +53,7 @@ export default function Login() {
         });
 
         await getRatedComics();
+        await getRatedCharacters();
 
         toast.success('Login Successfully', {
           position: 'top-right',

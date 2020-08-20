@@ -12,7 +12,7 @@ import {
 import {getUser, getRatedComics, setNewRateComic} from 'services/auth';
 import api from 'services/api';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {getComicByUrl} from 'services/apiMarvel';
+import {getByUrl} from 'services/apiMarvel';
 
 export default function CardComic(props) {
   const [user] = useState(getUser());
@@ -35,6 +35,18 @@ export default function CardComic(props) {
   };
 
   useEffect(() => {
+    if (isLiked !== undefined) {
+      if (isLiked) {
+        setRate('You liked this comic');
+        setColorRate('#51cbce');
+      } else {
+        setRate(`You didn't like this comic`);
+        setColorRate('#e62429');
+      }
+    }
+  }, [isLiked]);
+
+  useEffect(() => {
     async function getRateComic() {
       if (ratedComics !== null && ratedComics.length > 0) {
         const ratedComic = ratedComics.find((ratedComic) => {
@@ -44,24 +56,14 @@ export default function CardComic(props) {
           setIsLiked(ratedComic.isLiked);
         }
       }
-
-      if (isLiked !== undefined) {
-        if (isLiked) {
-          setRate('You liked this comic');
-          setColorRate('#51cbce');
-        } else {
-          setRate(`You didn't like this comic`);
-          setColorRate('#e62429');
-        }
-      }
     }
     getRateComic();
-  }, [comic.resourceURI, isLiked, ratedComics]);
+  }, [comic.resourceURI, ratedComics]);
 
   useEffect(() => {
     async function getComic() {
       if (url) {
-        const response = await getComicByUrl(url).get();
+        const response = await getByUrl(url).get();
         const comic = response.data.data.results[0];
         setComic(comic);
       }
@@ -91,7 +93,7 @@ export default function CardComic(props) {
         <CardImg top src={imageCover} alt='...' />
         <CardBody>
           <CardTitle>{comic.title}</CardTitle>
-          {rate && url ? <p style={{color: colorRate}}>{rate}</p> : null}
+          {rate && url && <p style={{color: colorRate}}>{rate}</p>}
         </CardBody>
         <Button className='btn btn-danger' onClick={toggle}>
           Info
@@ -112,7 +114,7 @@ export default function CardComic(props) {
           </div>
           <div className='modal-body'>
             <div className='text-center'>
-              {rate ? <p style={{color: colorRate}}>{rate}</p> : null}
+              {rate && <p style={{color: colorRate}}>{rate}</p>}
               <CardImg
                 style={{width: '15rem'}}
                 top
@@ -120,14 +122,14 @@ export default function CardComic(props) {
                 alt='...'
               />
               <CardTitle>{comic.title}</CardTitle>
-              {comic.description ? (
+              {comic.description && (
                 <p>
                   <b>Description:</b> {comic.description}
                 </p>
-              ) : null}
+              )}
             </div>
           </div>
-          {user ? (
+          {user && (
             <div className='modal-footer'>
               <div className='left-side'>
                 <Button
@@ -159,7 +161,7 @@ export default function CardComic(props) {
                 </UncontrolledTooltip>
               </div>
             </div>
-          ) : null}
+          )}
         </Modal>
       </Card>
     </Col>

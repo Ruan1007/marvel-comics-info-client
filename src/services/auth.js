@@ -21,9 +21,8 @@ export const logout = () => {
 export const getRatedComics = () =>
   JSON.parse(localStorage.getItem(COMICS_KEY));
 
-export const setRatedComics = (comics) => {
+export const setRatedComics = (comics) =>
   localStorage.setItem(COMICS_KEY, comics);
-};
 
 export const setNewRateComic = (comic) => {
   const comics =
@@ -37,4 +36,24 @@ export const setNewRateComic = (comic) => {
 
   comicsFilter.push(comic);
   localStorage.setItem(COMICS_KEY, JSON.stringify(comicsFilter));
+};
+
+export const getRatedCharacters = () =>
+  JSON.parse(localStorage.getItem(CHARACTERS_KEY));
+
+export const setRatedCharacters = (characters) =>
+  localStorage.setItem(CHARACTERS_KEY, characters);
+
+export const setNewRateCharacter = (character) => {
+  const characters =
+    getRatedCharacters() !== null && getRatedCharacters() !== undefined
+      ? getRatedCharacters()
+      : [];
+
+  const charactersFilter = characters.filter((ratedCharacter) => {
+    return ratedCharacter._id !== character._id;
+  });
+
+  charactersFilter.push(character);
+  localStorage.setItem(CHARACTERS_KEY, JSON.stringify(charactersFilter));
 };
