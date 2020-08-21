@@ -23,12 +23,12 @@ export default function CardComic(props) {
   const [rate, setRate] = useState();
   const [colorRate, setColorRate] = useState();
   const [ratedComics, setRatedComics] = useState([]);
-  const [url] = useState(props.url);
+  const [comicId] = useState(props.comicId);
 
   const title = 'COMIC';
 
-  const rateComic = async (isLiked, url) => {
-    const response = await api.post('comic/', {isLiked, url});
+  const rateComic = async (isLiked, comicId) => {
+    const response = await api.post('comic/', {isLiked, comicId});
     const comic = response.data;
     setIsLiked(comic.isLiked);
     setNewRateComic(comic);
@@ -50,7 +50,7 @@ export default function CardComic(props) {
     async function getRateComic() {
       if (ratedComics !== null && ratedComics.length > 0) {
         const ratedComic = ratedComics.find((ratedComic) => {
-          return ratedComic.url === comic.resourceURI;
+          return ratedComic.comicId === comic.id;
         });
         if (ratedComic) {
           setIsLiked(ratedComic.isLiked);
@@ -58,18 +58,18 @@ export default function CardComic(props) {
       }
     }
     getRateComic();
-  }, [comic.resourceURI, ratedComics]);
+  }, [comic, ratedComics]);
 
   useEffect(() => {
     async function getComic() {
-      if (url) {
-        const response = await getByUrl(url).get();
+      if (comicId) {
+        const response = await getByUrl(`comics/${comicId}`).get();
         const comic = response.data.data.results[0];
         setComic(comic);
       }
     }
     getComic();
-  }, [url]);
+  }, [comicId]);
 
   useEffect(() => {
     setRatedComics(getRatedComics());
@@ -93,7 +93,7 @@ export default function CardComic(props) {
         <CardImg top src={imageCover} alt='...' />
         <CardBody>
           <CardTitle>{comic.title}</CardTitle>
-          {rate && url && <p style={{color: colorRate}}>{rate}</p>}
+          {rate && comicId && <p style={{color: colorRate}}>{rate}</p>}
         </CardBody>
         <Button className='btn btn-danger' onClick={toggle}>
           Info
@@ -138,7 +138,7 @@ export default function CardComic(props) {
                   color='primary'
                   type='button'
                   style={{fontSize: '25px'}}
-                  onClick={() => rateComic(true, comic.resourceURI)}>
+                  onClick={() => rateComic(true, comic.id)}>
                   <FontAwesomeIcon icon='thumbs-up' />
                 </Button>
                 <UncontrolledTooltip placement='top' target='like' delay={0}>
@@ -153,7 +153,7 @@ export default function CardComic(props) {
                   color='danger'
                   type='button'
                   style={{fontSize: '25px'}}
-                  onClick={() => rateComic(false, comic.resourceURI)}>
+                  onClick={() => rateComic(false, comic.id)}>
                   <FontAwesomeIcon icon='thumbs-down' />
                 </Button>
                 <UncontrolledTooltip placement='top' target='dislike' delay={0}>

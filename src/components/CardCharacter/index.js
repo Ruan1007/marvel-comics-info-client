@@ -25,12 +25,12 @@ export default function CardCharacter({...props}) {
   const [rate, setRate] = useState();
   const [colorRate, setColorRate] = useState();
   const [ratedCharacters, setRatedCharacters] = useState([]);
-  const [url] = useState(props.url);
+  const [characterId] = useState(props.characterId);
 
   const title = 'CHARACTER';
 
-  const rateCharacter = async (isLiked, url) => {
-    const response = await api.post('character/', {isLiked, url});
+  const rateCharacter = async (isLiked, characterId) => {
+    const response = await api.post('character/', {isLiked, characterId});
     const character = response.data;
     setIsLiked(character.isLiked);
     setNewRateCharacter(character);
@@ -52,7 +52,7 @@ export default function CardCharacter({...props}) {
     async function getRatedCharacter() {
       if (ratedCharacters !== null && ratedCharacters.length > 0) {
         const ratedCharacter = ratedCharacters.find((ratedCharacter) => {
-          return ratedCharacter.url === character.resourceURI;
+          return ratedCharacter.comicId === character.id;
         });
         if (ratedCharacter) {
           setIsLiked(ratedCharacter.isLiked);
@@ -60,18 +60,18 @@ export default function CardCharacter({...props}) {
       }
     }
     getRatedCharacter();
-  }, [character.resourceURI, ratedCharacters]);
+  }, [character, ratedCharacters]);
 
   useEffect(() => {
     async function getCharacter() {
-      if (url) {
-        const response = await getByUrl(url).get();
+      if (characterId) {
+        const response = await getByUrl(`characters/${characterId}`).get();
         const character = response.data.data.results[0];
         setCharacter(character);
       }
     }
     getCharacter();
-  }, [url]);
+  }, [characterId]);
 
   useEffect(() => {
     setRatedCharacters(getRatedCharacters);
@@ -100,7 +100,7 @@ export default function CardCharacter({...props}) {
         />
         <CardBody>
           <CardTitle>{character.name}</CardTitle>
-          {rate && url && <p style={{color: colorRate}}>{rate}</p>}
+          {rate && characterId && <p style={{color: colorRate}}>{rate}</p>}
         </CardBody>
         <Button className='btn btn-danger' onClick={toggle}>
           Info

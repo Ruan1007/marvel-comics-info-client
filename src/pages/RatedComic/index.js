@@ -23,7 +23,11 @@ export default function RatedComic() {
               {myRatedComics.length > 0 ? (
                 myRatedComics.map((comic) => {
                   return (
-                    <CardComic comic={comic} url={comic.url} key={comic._id} />
+                    <CardComic
+                      comic={comic}
+                      comicId={comic.comicId}
+                      key={comic._id}
+                    />
                   );
                 })
               ) : (

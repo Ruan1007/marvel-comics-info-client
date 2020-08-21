@@ -9,26 +9,28 @@ const timestamp = Number(new Date());
 const hash = md5.create();
 hash.update(timestamp + MARVEL_API_PRIVATE_KEY + MARVEL_API_PUBLIC_KEY);
 
+const baseUrl = 'https://gateway.marvel.com/v1/public/';
+
 export const marvelApiComics = () => {
   return axios.create({
-    baseURL: `http://gateway.marvel.com/v1/public/comics?format=comic&dateDescriptor=thisWeek&limit=4&ts=${timestamp}&apikey=${MARVEL_API_PUBLIC_KEY}&hash=${hash.hex()}`
+    baseURL: `${baseUrl}comics?format=comic&dateDescriptor=thisWeek&limit=4&ts=${timestamp}&apikey=${MARVEL_API_PUBLIC_KEY}&hash=${hash.hex()}`
   });
 };
 
 export const searchComicByTitle = ({title}) => {
   return axios.create({
-    baseURL: `https://gateway.marvel.com:443/v1/public/comics?format=comic&titleStartsWith=${title}&limit=12&ts=${timestamp}&apikey=${MARVEL_API_PUBLIC_KEY}&hash=${hash.hex()}`
+    baseURL: `${baseUrl}comics?format=comic&titleStartsWith=${title}&limit=12&ts=${timestamp}&apikey=${MARVEL_API_PUBLIC_KEY}&hash=${hash.hex()}`
   });
 };
 
 export const searchCharacterByName = ({name}) => {
   return axios.create({
-    baseURL: `https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=${name}&limit=12&ts=${timestamp}&apikey=${MARVEL_API_PUBLIC_KEY}&hash=${hash.hex()}`
+    baseURL: `${baseUrl}characters?nameStartsWith=${name}&limit=12&ts=${timestamp}&apikey=${MARVEL_API_PUBLIC_KEY}&hash=${hash.hex()}`
   });
 };
 
 export const getByUrl = (url) => {
   return axios.create({
-    baseURL: `${url}?ts=${timestamp}&apikey=${MARVEL_API_PUBLIC_KEY}&hash=${hash.hex()}`
+    baseURL: `${baseUrl}${url}?ts=${timestamp}&apikey=${MARVEL_API_PUBLIC_KEY}&hash=${hash.hex()}`
   });
 };

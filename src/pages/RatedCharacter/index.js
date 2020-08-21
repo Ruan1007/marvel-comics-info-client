@@ -24,7 +24,7 @@ export default function RatedCharacter() {
                   return (
                     <CardCharacter
                       character={character}
-                      url={character.url}
+                      characterId={character.characterId}
                       key={character._id}
                     />
                   );
