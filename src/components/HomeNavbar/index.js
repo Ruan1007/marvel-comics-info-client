@@ -122,11 +122,15 @@ export default function HomeNavbar() {
             </button>
             <Nav navbar className='mr-auto mt-2 mt-lg-0'>
               <NavItem>
+                <NavLink to='/' tag={Link}>
+                  Home
+                </NavLink>
+              </NavItem>
+              <NavItem>
                 <NavLink to='/comics' tag={Link}>
                   Comics
                 </NavLink>
               </NavItem>
-
               <NavItem>
                 <NavLink to='/characters' tag={Link}>
                   Characters
@@ -179,6 +183,7 @@ export default function HomeNavbar() {
                     <NavLink to='/profile' tag={Link}>
                       <DropdownItem className='nav-item'>Profile</DropdownItem>
                     </NavLink>
+                    <DropdownItem divider tag='li' />
                     <NavLink to='/rated-comics' tag={Link}>
                       <DropdownItem className='nav-item'>
                         My rated comics
@@ -187,6 +192,11 @@ export default function HomeNavbar() {
                     <NavLink to='/rated-characters' tag={Link}>
                       <DropdownItem className='nav-item'>
                         My rated characters
+                      </DropdownItem>
+                    </NavLink>
+                    <NavLink to='/my-favorites' tag={Link}>
+                      <DropdownItem className='nav-item'>
+                        My favorites
                       </DropdownItem>
                     </NavLink>
                     <DropdownItem divider tag='li' />

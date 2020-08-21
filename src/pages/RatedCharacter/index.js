@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import HomeNavbar from 'components/HomeNavbar';
 import ProfileHeader from 'components/ProfileHeader';
 import Footer from 'components/Footer';
@@ -7,7 +7,17 @@ import {Container, Row} from 'reactstrap';
 import {getRatedCharacters} from 'services/auth';
 
 export default function RatedCharacter() {
-  const [myRatedCharacters] = useState(getRatedCharacters());
+  const [myRatedCharacters, setMyRatedCharacters] = useState([]);
+
+  useEffect(() => {
+    const ratedCharacters = getRatedCharacters();
+    setMyRatedCharacters(
+      ratedCharacters.filter((character) => {
+        return character.isLiked !== undefined;
+      })
+    );
+  }, []);
+
   return (
     <>
       <HomeNavbar />
@@ -25,7 +35,7 @@ export default function RatedCharacter() {
                     <CardCharacter
                       character={character}
                       characterId={character.characterId}
-                      key={character._id}
+                      key={character.characterId}
                     />
                   );
                 })

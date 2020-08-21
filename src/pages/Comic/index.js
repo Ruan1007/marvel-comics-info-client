@@ -107,7 +107,13 @@ export default function Comic() {
             <Row className='col-sm-12 text-center'>
               {comics.length > 0 ? (
                 comics.map((comic) => {
-                  return <CardComic comic={comic} key={comic.id} />;
+                  return (
+                    <CardComic
+                      comic={comic}
+                      comicId={comic.id}
+                      key={comic.id}
+                    />
+                  );
                 })
               ) : (
                 <div>Nothing to show...</div>

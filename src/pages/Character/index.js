@@ -106,7 +106,11 @@ export default function Character() {
               {characters.length > 0 ? (
                 characters.map((character) => {
                   return (
-                    <CardCharacter character={character} key={character.id} />
+                    <CardCharacter
+                      character={character}
+                      characterId={character.id}
+                      key={character.id}
+                    />
                   );
                 })
               ) : (

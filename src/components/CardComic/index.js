@@ -20,19 +20,31 @@ export default function CardComic(props) {
   const [imageCover, setImageCover] = useState('');
   const [modal, setModal] = useState(false);
   const [isLiked, setIsLiked] = useState();
+  const [isFavorite, setIsFavorite] = useState();
+  const [starColor, setStarColor] = useState();
   const [rate, setRate] = useState();
   const [colorRate, setColorRate] = useState();
   const [ratedComics, setRatedComics] = useState([]);
   const [comicId] = useState(props.comicId);
+  const [characters, setCharacters] = useState([]);
 
   const title = 'COMIC';
 
-  const rateComic = async (isLiked, comicId) => {
-    const response = await api.post('comic/', {isLiked, comicId});
+  const rateComic = async (isLiked, isFavorite, comicId) => {
+    const response = await api.post('comic/', {isLiked, isFavorite, comicId});
     const comic = response.data;
     setIsLiked(comic.isLiked);
+    setIsFavorite(comic.isFavorite);
     setNewRateComic(comic);
   };
+
+  useEffect(() => {
+    if (isFavorite !== undefined && isFavorite) {
+      setStarColor('#FDF796');
+    } else {
+      setStarColor('#403D39');
+    }
+  }, [isFavorite]);
 
   useEffect(() => {
     if (isLiked !== undefined) {
@@ -54,6 +66,7 @@ export default function CardComic(props) {
         });
         if (ratedComic) {
           setIsLiked(ratedComic.isLiked);
+          setIsFavorite(ratedComic.isFavorite);
         }
       }
     }
@@ -65,6 +78,8 @@ export default function CardComic(props) {
       if (comicId) {
         const response = await getByUrl(`comics/${comicId}`).get();
         const comic = response.data.data.results[0];
+        const characters = comic.characters.items;
+        setCharacters(characters);
         setComic(comic);
       }
     }
@@ -78,7 +93,7 @@ export default function CardComic(props) {
       setImageCover(image.path + '.' + image.extension);
     } else {
       setImageCover(
-        'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'
+        'https://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'
       );
     }
   }, [comic]);
@@ -100,9 +115,31 @@ export default function CardComic(props) {
         </Button>
         <Modal isOpen={modal} toggle={toggle}>
           <div className='modal-header'>
-            <h5 className='modal-title' id='exampleModalLiveLabel'>
-              {title}
-            </h5>
+            <h5 className='modal-title'>{title}</h5>
+            <div
+              id='favorite'
+              style={{fontSize: '19px', paddingLeft: '10px'}}
+              onClick={() => rateComic(isLiked, !isFavorite, comic.id)}>
+              <FontAwesomeIcon
+                icon='star'
+                style={{color: starColor, borderColor: '#403D39'}}
+              />
+            </div>
+            {!isFavorite ? (
+              <UncontrolledTooltip
+                placement='right'
+                target='favorite'
+                delay={0}>
+                Make favorite
+              </UncontrolledTooltip>
+            ) : (
+              <UncontrolledTooltip
+                placement='right'
+                target='favorite'
+                delay={0}>
+                Unmake favorite
+              </UncontrolledTooltip>
+            )}
             <button
               aria-label='Close'
               className='close'
@@ -124,9 +161,23 @@ export default function CardComic(props) {
               <CardTitle>{comic.title}</CardTitle>
               {comic.description && (
                 <p>
-                  <b>Description:</b> {comic.description}
+                  <span style={{fontWeight: 'bold'}}>Description:</span>{' '}
+                  {comic.description}
                 </p>
               )}
+              <div>
+                <br />
+                {characters.length > 0 && (
+                  <span style={{fontWeight: 'bold'}}>Characters:</span>
+                )}
+                {characters.length > 0
+                  ? characters.map((character) => {
+                      return (
+                        <p key={character.resourceURI}>{character.name}</p>
+                      );
+                    })
+                  : null}
+              </div>
             </div>
           </div>
           {user && (
@@ -138,7 +189,7 @@ export default function CardComic(props) {
                   color='primary'
                   type='button'
                   style={{fontSize: '25px'}}
-                  onClick={() => rateComic(true, comic.id)}>
+                  onClick={() => rateComic(true, isFavorite, comic.id)}>
                   <FontAwesomeIcon icon='thumbs-up' />
                 </Button>
                 <UncontrolledTooltip placement='top' target='like' delay={0}>
@@ -153,7 +204,7 @@ export default function CardComic(props) {
                   color='danger'
                   type='button'
                   style={{fontSize: '25px'}}
-                  onClick={() => rateComic(false, comic.id)}>
+                  onClick={() => rateComic(false, isFavorite, comic.id)}>
                   <FontAwesomeIcon icon='thumbs-down' />
                 </Button>
                 <UncontrolledTooltip placement='top' target='dislike' delay={0}>

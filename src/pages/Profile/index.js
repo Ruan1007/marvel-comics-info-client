@@ -12,8 +12,10 @@ import {getUser, setUser} from 'services/auth';
 import {toast} from 'react-toastify';
 import ImageUploader from 'react-images-upload';
 import Loader from 'components/Loader';
+import {useHistory} from 'react-router-dom';
 
 export default function Profile() {
+  const history = useHistory();
   const [user] = useState(getUser());
   const [date, setDate] = useState(user.birthDate);
   const [formattedValue, setFormattedDate] = useState();
@@ -94,6 +96,8 @@ export default function Profile() {
           closeOnClick: true,
           pauseOnHover: true
         });
+
+        return history.push('/');
       } catch (err) {
         toast.error(err.message, {
           position: 'top-right',
@@ -104,7 +108,7 @@ export default function Profile() {
         return false;
       }
     },
-    [ProfileSchema]
+    [ProfileSchema, history]
   );
 
   return (

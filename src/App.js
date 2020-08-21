@@ -5,9 +5,13 @@ import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {fab} from '@fortawesome/free-brands-svg-icons';
-import {faThumbsUp, faThumbsDown} from '@fortawesome/free-solid-svg-icons';
+import {
+  faThumbsUp,
+  faThumbsDown,
+  faStar
+} from '@fortawesome/free-solid-svg-icons';
 
-library.add(fab, faThumbsUp, faThumbsDown);
+library.add(fab, faThumbsUp, faThumbsDown, faStar);
 
 function App() {
   return (

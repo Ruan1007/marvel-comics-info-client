@@ -2,7 +2,12 @@ import React, {useCallback, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import * as Yup from 'yup';
 import api from 'services/api';
-import {setUser, setToken} from 'services/auth';
+import {
+  setUser,
+  setToken,
+  setRatedCharacters,
+  setRatedComics
+} from 'services/auth';
 import {toast} from 'react-toastify';
 import {Formik, Form, Field} from 'formik';
 import {Container, Row, Col, Card, Button} from 'reactstrap';
@@ -48,6 +53,8 @@ export default function Register() {
     api.defaults.headers['Authorization'] = `Bearer ${token}`;
     setUser(JSON.stringify(user));
     setToken(token);
+    setRatedCharacters([]);
+    setRatedComics([]);
   };
 
   const handleSubmit = useCallback(
