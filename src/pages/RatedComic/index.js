@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import HomeNavbar from 'components/HomeNavbar';
 import ProfileHeader from 'components/ProfileHeader';
 import {Container, Row} from 'reactstrap';
@@ -7,7 +7,16 @@ import {getRatedComics} from 'services/auth';
 import Footer from 'components/Footer';
 
 export default function RatedComic() {
-  const [myRatedComics] = useState(getRatedComics());
+  const [myRatedComics, setMyRatedComics] = useState(getRatedComics());
+
+  useEffect(() => {
+    const ratedComics = getRatedComics();
+    setMyRatedComics(
+      ratedComics.filter((comics) => {
+        return comics.isLiked !== undefined;
+      })
+    );
+  }, []);
 
   return (
     <>
