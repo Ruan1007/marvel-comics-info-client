@@ -106,9 +106,9 @@ export default function Login() {
                         name='email'
                         type='email'
                       />
-                      {errors.email && touched.email ? (
+                      {errors.email && touched.email && (
                         <div style={{color: 'red'}}>{errors.email}</div>
-                      ) : null}
+                      )}
                       <label>Password</label>
                       <Field
                         className='form-control'
@@ -116,9 +116,9 @@ export default function Login() {
                         name='password'
                         type='password'
                       />
-                      {errors.password && touched.password ? (
+                      {errors.password && touched.password && (
                         <div style={{color: 'red'}}>{errors.password}</div>
-                      ) : null}
+                      )}
                       <Button
                         block
                         type='submit'
@@ -137,9 +137,8 @@ export default function Login() {
                   </Button>
                   <Button
                     className='btn-link'
-                    href='#'
-                    style={{color: '#FFF'}}
-                    onClick={(e) => e.preventDefault()}>
+                    href='/forgot-password'
+                    style={{color: '#FFF'}}>
                     Forgot password?
                   </Button>
                 </div>

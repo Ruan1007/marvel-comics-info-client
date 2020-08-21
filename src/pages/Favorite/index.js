@@ -13,14 +13,14 @@ export default function Favorite() {
   const [favoriteCharacters, setFavoriteCharacters] = useState([]);
 
   useEffect(() => {
-    const comics = getRatedComics();
+    const comics = getRatedComics() ? getRatedComics() : [];
     setFavoriteComics(
       comics.filter((comic) => {
         return comic.isFavorite === true;
       })
     );
 
-    const characters = getRatedCharacters();
+    const characters = getRatedCharacters() ? getRatedCharacters() : [];
     setFavoriteCharacters(
       characters.filter((character) => {
         return character.isFavorite === true;
@@ -35,11 +35,9 @@ export default function Favorite() {
       <div className='main text-center'>
         <div className='section section-dark'>
           <Container>
-            <h2 className='title' style={{color: '#FFF'}}>
-              MY FAVORITES
-            </h2>
+            <h2 className='title mx-auto'>MY FAVORITES</h2>
             <div className='section section-dark'>
-              <h4 style={{color: '#FFF'}}>COMICS</h4>
+              <h4 className='title mx-auto'>COMICS</h4>
               <div className='section section-dark'>
                 <Row className='col-sm-12 text-center'>
                   {favoriteComics.length > 0 ? (
@@ -59,7 +57,7 @@ export default function Favorite() {
               </div>
             </div>
             <div className='section section-dark'>
-              <h4 style={{color: '#FFF'}}>CHARACTERS</h4>
+              <h4 className='title mx-auto'>CHARACTERS</h4>
               <div className='section section-dark'>
                 <Row className='col-sm-12 text-center'>
                   {favoriteCharacters.length > 0 ? (

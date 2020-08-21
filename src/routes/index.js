@@ -11,6 +11,7 @@ import NotFound from 'pages/NotFound';
 import RatedComic from 'pages/RatedComic';
 import RatedCharacter from 'pages/RatedCharacter';
 import Favorite from 'pages/Favorite';
+import ForgotPassword from 'pages/ForgotPassword';
 
 const PrivateRoute = ({component: Component, ...rest}) => (
   <Route
@@ -39,6 +40,11 @@ export default function Routes() {
           exact={true}
           path='/register'
           render={(props) => <Register {...props} />}
+        />
+        <Route
+          exact={true}
+          path='/forgot-password'
+          render={(props) => <ForgotPassword {...props} />}
         />
         <Route
           exact={true}

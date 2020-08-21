@@ -191,15 +191,6 @@ export default function Register() {
                     style={{color: '#FFF'}}>
                     Login
                   </Button>
-                  <Button
-                    className='btn-link'
-                    href='#'
-                    style={{color: '#FFF'}}
-                    onClick={(e) => e.preventDefault()}>
-                    Forgot password?
-                  </Button>
-                </div>
-                <div className='text-center'>
                   <Button className='btn-link' href='/' style={{color: '#FFF'}}>
                     Go to Home
                   </Button>
